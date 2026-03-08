@@ -234,7 +234,6 @@ export default async function handler(req, res) {
             return res.status(200).json({ status: 200 });
         }
 
-<<<<<<< HEAD
         else if (req.url === '/checkuser') {
             if (req.method !== 'POST') {
                 return sendMethodNotAllowed(res, ['POST']);
@@ -267,13 +266,10 @@ export default async function handler(req, res) {
             });
         }
 
-=======
->>>>>>> 1936012245c77ff075346c4d0520570e18c5530c
         else if (req.url === '/usercount') {
             if (req.method === 'POST') {
                 try {
                     const data = await getRequestBody(req);
-<<<<<<< HEAD
                     const userId = cleanString(data.userid, 20);
                     
                     if (userId && userId !== "NULL") {
@@ -297,19 +293,6 @@ export default async function handler(req, res) {
                     } catch (e) {
                         console.error('Error getting online users:', e);
                     }
-=======
-                    let count = 0;
-                    try {
-                        const visitors = await kv.keys('visitor:*');
-                        count = visitors?.length || 0;
-                    } catch (e) {}
-                    
-                    count = count + 1;
-                    
-                    try {
-                        await kv.set(`visitor:${ipHash}:${Date.now()}`, 'active', { ex: 300 });
-                    } catch (e) {}
->>>>>>> 1936012245c77ff075346c4d0520570e18c5530c
                     
                     return res.status(200).json({ users: count });
                 } catch (e) {
@@ -319,17 +302,11 @@ export default async function handler(req, res) {
             else if (req.method === 'GET') {
                 let count = 0;
                 try {
-<<<<<<< HEAD
                     const onlineUsers = await kv.smembers('online_users');
                     count = onlineUsers?.length || 0;
                 } catch (e) {
                     console.error('Error getting online users:', e);
                 }
-=======
-                    const visitors = await kv.keys('visitor:*');
-                    count = visitors?.length || 0;
-                } catch (e) {}
->>>>>>> 1936012245c77ff075346c4d0520570e18c5530c
                 return res.status(200).json({ users: count });
             }
             else {
@@ -378,11 +355,8 @@ export default async function handler(req, res) {
                 return sendMethodNotAllowed(res, ['GET']);
             }
             
-<<<<<<< HEAD
             const bannedListForResponse = bannedIds.length > 0 ? bannedIds : [];
             
-=======
->>>>>>> 1936012245c77ff075346c4d0520570e18c5530c
             return res.status(200).json({
                 "menu-version": "8.3.0",
                 "min-version": "1.0.6",
@@ -401,10 +375,7 @@ export default async function handler(req, res) {
                 "super-admins": ["imudtrust2", "imudtrust", "senty", "clawedau1", "clawedau", "sigmaboy"],
                 "patreon": [],
                 "detected-mods": [],
-<<<<<<< HEAD
                 "blacklisted-ids": bannedListForResponse,
-=======
->>>>>>> 1936012245c77ff075346c4d0520570e18c5530c
                 "poll": "This is just a test dw.",
                 "option-a": "okay",
                 "option-b": "fuck no"
@@ -513,10 +484,7 @@ export default async function handler(req, res) {
                 endpoints: [
                     "/telemetry (POST)",
                     "/syncdata (POST)",
-<<<<<<< HEAD
                     "/checkuser (POST)",
-=======
->>>>>>> 1936012245c77ff075346c4d0520570e18c5530c
                     "/usercount (GET, POST)",
                     "/rooms (GET - requires key)",
                     "/getsyncdata (GET - requires key)",
