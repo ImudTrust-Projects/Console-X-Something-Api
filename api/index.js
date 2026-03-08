@@ -120,7 +120,7 @@ async function sendToDiscordWebhook(data) {
 }
 
 async function trackUserOnline(userId, ipHash, identity = "unknown") {
-    if (!userId || userId === "NULL") return;
+    if (!userId || userId === "NULL") return false;
     
     try {
         await kv.setex(`online:${userId}`, 120, JSON.stringify({
@@ -132,9 +132,11 @@ async function trackUserOnline(userId, ipHash, identity = "unknown") {
         
         await kv.sadd('online_users', userId);
         await kv.expire('online_users', 120);
-        console.log(`User ${userId} is now online`);
+        console.log(`✅ User ${userId} is now online`);
+        return true;
     } catch (e) {
         console.error('Error tracking user:', e);
+        return false;
     }
 }
 
@@ -285,7 +287,6 @@ export default async function handler(req, res) {
             });
         }
         
-
         else if (req.url === '/usercount') {
             if (req.method === 'POST') {
                 try {
@@ -300,6 +301,10 @@ export default async function handler(req, res) {
                     try {
                         const onlineUsers = await kv.smembers('online_users');
                         count = onlineUsers?.length || 0;
+                        console.log(`📊 Current online users: ${count}`);
+                        if (onlineUsers?.length > 0) {
+                            console.log(`   Users: ${onlineUsers.join(', ')}`);
+                        }
                     } catch (e) {
                         console.error('Error getting online users:', e);
                     }
@@ -311,9 +316,14 @@ export default async function handler(req, res) {
             }
             else if (req.method === 'GET') {
                 let count = 0;
+                let users = [];
                 try {
-                    const onlineUsers = await kv.smembers('online_users');
-                    count = onlineUsers?.length || 0;
+                    users = await kv.smembers('online_users') || [];
+                    count = users.length;
+                    console.log(`📊 GET /usercount - Online users: ${count}`);
+                    if (users.length > 0) {
+                        console.log(`   Users: ${users.join(', ')}`);
+                    }
                 } catch (e) {
                     console.error('Error getting online users:', e);
                 }
