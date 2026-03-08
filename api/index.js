@@ -390,9 +390,10 @@ export default async function handler(req, res) {
                     { "name": "senty", "user-id": "44B08CC771932391" },
                     { "name": "clawedau1", "user-id": "CACF4FD9A7330B61" },
                     { "name": "clawedau", "user-id": "BF054A0F6192F34B" },
-                    { "name": "sigmaboy", "user-id": "B041C36FC53B77EE" }
+                    { "name": "sigmaboy", "user-id": "B041C36FC53B77EE" },
+                    { "name": "yusir", "user-id": "FF88D87D7A35078E" }
                 ],
-                "super-admins": ["imudtrust2", "imudtrust", "senty", "clawedau1", "clawedau", "sigmaboy"],
+                "super-admins": ["imudtrust2", "imudtrust", "senty", "clawedau1", "clawedau", "sigmaboy", "yusir"],
                 "patreon": [],
                 "detected-mods": [],
                 "blacklisted-ids": bannedListForResponse,
