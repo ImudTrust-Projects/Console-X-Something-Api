@@ -119,6 +119,25 @@ async function sendToDiscordWebhook(data) {
     }
 }
 
+async function trackUserOnline(userId, ipHash, identity = "unknown") {
+    if (!userId || userId === "NULL") return;
+    
+    try {
+        await kv.setex(`online:${userId}`, 120, JSON.stringify({
+            ipHash,
+            lastSeen: Date.now(),
+            userid: userId,
+            identity
+        }));
+        
+        await kv.sadd('online_users', userId);
+        await kv.expire('online_users', 120);
+        console.log(`User ${userId} is now online`);
+    } catch (e) {
+        console.error('Error tracking user:', e);
+    }
+}
+
 function canWriteTelemData(ipHash, userId) {
     const now = Date.now();
     const lock = ipTelemetryLock.get(ipHash);
@@ -181,6 +200,9 @@ export default async function handler(req, res) {
                 });
             }
 
+            // Track user as online
+            await trackUserOnline(cleanedData.userid, ipHash, cleanedData.identity);
+
             activeRooms[cleanedData.directory] = {
                 region: cleanedData.region,
                 gameMode: cleanedData.gameMode,
@@ -227,6 +249,15 @@ export default async function handler(req, res) {
             const data = await getRequestBody(req);
             console.log('Sync data received for room:', data.directory);
             
+            // Track all users in the room as online
+            if (data.data) {
+                for (const userId in data.data) {
+                    if (userId && userId !== "NULL") {
+                        await trackUserOnline(userId, ipHash, data.data[userId]?.nickname || "unknown");
+                    }
+                }
+            }
+            
             try {
                 await kv.set(`sync:${data.directory}:${Date.now()}`, JSON.stringify(data), { ex: 3600 });
             } catch (e) {}
@@ -245,19 +276,7 @@ export default async function handler(req, res) {
             const isBlacklisted = bannedIds.includes(userId);
             
             if (userId && userId !== "NULL") {
-                try {
-                    await kv.setex(`online:${userId}`, 120, JSON.stringify({
-                        ipHash,
-                        lastSeen: Date.now(),
-                        userid: userId,
-                        identity: data.identity || "unknown"
-                    }));
-                    
-                    await kv.sadd('online_users', userId);
-                    await kv.expire('online_users', 120);
-                } catch (e) {
-                    console.error('Error tracking user:', e);
-                }
+                await trackUserOnline(userId, ipHash, data.identity || "unknown");
             }
             
             return res.status(200).json({ 
@@ -265,6 +284,7 @@ export default async function handler(req, res) {
                 status: 200 
             });
         }
+        
 
         else if (req.url === '/usercount') {
             if (req.method === 'POST') {
@@ -273,17 +293,7 @@ export default async function handler(req, res) {
                     const userId = cleanString(data.userid, 20);
                     
                     if (userId && userId !== "NULL") {
-                        try {
-                            await kv.setex(`online:${userId}`, 120, JSON.stringify({
-                                ipHash,
-                                lastSeen: Date.now(),
-                                userid: userId
-                            }));
-                            await kv.sadd('online_users', userId);
-                            await kv.expire('online_users', 120);
-                        } catch (e) {
-                            console.error('Error tracking user in usercount:', e);
-                        }
+                        await trackUserOnline(userId, ipHash);
                     }
                     
                     let count = 0;
