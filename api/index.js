@@ -173,7 +173,7 @@ const server = http.createServer(async (req, res) => {
             const response = {
                 "menu-version": "1.0.0",
                 "min-version": "1.0.0",
-                "min-console-version": "1.0.0",
+                "min-CXS-version": "1.0.0",
                 "discord-invite": "",
                 "motd": "hello world",
                 "admins": [
