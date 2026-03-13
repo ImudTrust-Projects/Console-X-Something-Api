@@ -1,6 +1,6 @@
-# Liquid.Client API
+# Console-X-Something API
 
-**Liquid.Client API** is the original backend API we used for **Console** and related tools. It's built in **JavaScript** and designed to run on **Vercel**. Sensitive or private functionality has been removed—what remains is the core structure and endpoints for learning and integration.  
+**Console-X-Something API** is the original backend API we used for **Console-X-Something** and related tools. It's built in **JavaScript** and designed to run on **Vercel**. Sensitive or private functionality has been removed—what remains is the core structure and endpoints for learning and integration.  
 
 <details>
 <summary>Why Open Source?</summary>
@@ -9,7 +9,7 @@ The dev community thrives on **sharing knowledge and collaboration**. Many APIs 
 
 Making this project open source allows anyone to:  
 
-- Understand how the Liquid.Client API works  
+- Understand how the Console-X-Something API works  
 - Experiment and build their own projects  
 - Learn about **JavaScript backend APIs** and **Vercel deployment**  
 - Keep development and learning accessible to everyone  
@@ -32,7 +32,7 @@ This ensures the project stays **transparent, shareable, and educational** for e
 
 ## Key Features
 
-- Core backend API for Liquid.Client  
+- Core backend API for Console-X-Something  
 - Ready to deploy on **Vercel**  
 - Lightweight, simple, and written in **JavaScript**  
 - Easy to integrate with Console and other frontends  
