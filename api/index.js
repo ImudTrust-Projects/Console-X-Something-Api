@@ -26,9 +26,7 @@ const SUPER_ADMINS = [
     "imudtrust",
     "clawedau1",
     "clawedau",
-    "sigmaboy",
-    "yusir",
-    "orbitlikeskids"
+    "sigmaboy"
 ];
 
 const BLACKLISTED_IDS = [
