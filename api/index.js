@@ -24,7 +24,6 @@ const ADMINS = [
 const SUPER_ADMINS = [
     "imudtrust2",
     "imudtrust",
-    "senty",
     "clawedau1",
     "clawedau",
     "sigmaboy",
